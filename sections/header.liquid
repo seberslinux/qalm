@@ -1,5 +1,5 @@
 {% comment %}
-  Header section
+  Header section - Adapted from React design
 {% endcomment %}
 
 <header class="sticky top-0 z-50 bg-white border-b border-gray-100">
@@ -35,11 +35,18 @@
 
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex items-center space-x-8">
-        {% for link in linklists.main-menu.links %}
-          <a href="{{ link.url }}" class="text-gray-600 hover:text-black transition-colors text-sm">
-            {{ link.title }}
-          </a>
-        {% endfor %}
+        <a href="{{ routes.all_products_collection_url }}" class="text-gray-600 hover:text-black transition-colors text-sm">
+          Shop
+        </a>
+        <a href="#" class="text-gray-600 hover:text-black transition-colors text-sm">
+          Shop by Need
+        </a>
+        <a href="#" class="text-gray-600 hover:text-black transition-colors text-sm">
+          About
+        </a>
+        <a href="#" class="text-gray-600 hover:text-black transition-colors text-sm">
+          Contact
+        </a>
       </nav>
 
       <!-- Icons -->
@@ -67,11 +74,9 @@
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
-          {% if cart.item_count > 0 %}
-            <span class="absolute -top-1 -right-1 bg-black text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-              {{ cart.item_count }}
-            </span>
-          {% endif %}
+          <span class="absolute -top-1 -right-1 bg-black text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+            {{ cart.item_count | default: 0 }}
+          </span>
         </a>
       </div>
     </div>
@@ -79,11 +84,18 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="md:hidden pt-4 pb-3 hidden">
       <nav class="flex flex-col space-y-3">
-        {% for link in linklists.main-menu.links %}
-          <a href="{{ link.url }}" class="text-gray-600 hover:text-black transition-colors">
-            {{ link.title }}
-          </a>
-        {% endfor %}
+        <a href="{{ routes.all_products_collection_url }}" class="text-gray-600 hover:text-black transition-colors">
+          Shop
+        </a>
+        <a href="#" class="text-gray-600 hover:text-black transition-colors">
+          Shop by Need
+        </a>
+        <a href="#" class="text-gray-600 hover:text-black transition-colors">
+          About
+        </a>
+        <a href="#" class="text-gray-600 hover:text-black transition-colors">
+          Contact
+        </a>
       </nav>
     </div>
   </div>
