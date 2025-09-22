@@ -35,16 +35,6 @@
   "newsletter": {
     "success": "Thanks for subscribing"
   },
-  "cart": {
-    "general": {
-      "title": "Shopping Cart",
-      "subtotal": "Subtotal",
-      "update": "Update",
-      "checkout": "Checkout",
-      "empty": "Your cart is empty",
-      "continue_shopping": "Continue shopping"
-    }
-  },
   "sections": {
     "slideshow": {
       "pause_slideshow": "Pause slideshow",

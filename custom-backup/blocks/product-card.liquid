@@ -1,0 +1,148 @@
+{% comment %}
+  Product card block - Reusable product display component
+{% endcomment %}
+
+{%- liquid
+  assign product = block.settings.product
+  assign show_vendor = block.settings.show_vendor
+  assign show_rating = block.settings.show_rating
+  assign show_quick_add = block.settings.show_quick_add
+-%}
+
+{% if product != blank %}
+  <div class="product-card group">
+    <div class="relative overflow-hidden mb-4">
+      {% if product.featured_media %}
+        <a href="{{ product.url }}">
+          <img 
+            src="{{ product.featured_media | image_url: width: 400 }}" 
+            alt="{{ product.featured_media.alt | default: product.title }}" 
+            class="w-full h-[400px] object-cover transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          >
+        </a>
+      {% else %}
+        <a href="{{ product.url }}">
+          <div class="w-full h-[400px] bg-gray-200 flex items-center justify-center">
+            <span class="text-gray-400">No image</span>
+          </div>
+        </a>
+      {% endif %}
+      
+      {% if show_quick_add %}
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-white bg-opacity-90 transform translate-y-full transition-transform duration-300 group-hover:translate-y-0">
+          <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <button 
+              type="submit" 
+              name="add" 
+              class="w-full py-3 bg-black text-white text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors"
+              {% unless product.available %}disabled{% endunless %}
+            >
+              {% if product.available %}
+                Add to Cart
+              {% else %}
+                Sold Out
+              {% endif %}
+            </button>
+          </form>
+        </div>
+      {% endif %}
+    </div>
+    
+    <div class="product-info">
+      {% if show_vendor and product.vendor != blank %}
+        <p class="text-sm text-gray-500 mb-1">{{ product.vendor }}</p>
+      {% endif %}
+      
+      <h3 class="text-lg font-light mb-2">
+        <a href="{{ product.url }}" class="hover:text-gray-600 transition-colors">
+          {{ product.title }}
+        </a>
+      </h3>
+      
+      <div class="price mb-2">
+        {% if product.price_varies %}
+          <span class="text-gray-700">From {{ product.price_min | money }}</span>
+        {% else %}
+          <span class="text-gray-700">{{ product.price | money }}</span>
+        {% endif %}
+        
+        {% if product.compare_at_price > product.price %}
+          <span class="text-sm text-gray-500 line-through ml-2">
+            {{ product.compare_at_price | money }}
+          </span>
+        {% endif %}
+      </div>
+      
+      {% if show_rating and product.metafields.reviews.rating.value != blank %}
+        <div class="rating flex items-center mb-2">
+          {% assign rating = product.metafields.reviews.rating.value %}
+          {% for i in (1..5) %}
+            {% if i <= rating %}
+              <span class="text-yellow-400">★</span>
+            {% else %}
+              <span class="text-gray-300">★</span>
+            {% endif %}
+          {% endfor %}
+          <span class="text-sm text-gray-500 ml-1">({{ product.metafields.reviews.rating_count.value | default: 0 }})</span>
+        </div>
+      {% endif %}
+      
+      {% if product.variants.size > 1 %}
+        <div class="color-options flex gap-2">
+          {% for variant in product.variants limit: 4 %}
+            {% if variant.option1 %}
+              <div 
+                class="w-4 h-4 rounded-full border border-gray-300" 
+                style="background-color: {{ variant.option1 }}"
+                aria-label="Color: {{ variant.option1 }}"
+              ></div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% else %}
+  <div class="product-card group">
+    <div class="w-full h-[400px] bg-gray-200 flex items-center justify-center mb-4">
+      <span class="text-gray-400">No product selected</span>
+    </div>
+    <div class="product-info">
+      <h3 class="text-lg font-light mb-2">Select a product</h3>
+      <p class="text-gray-500">Choose a product to display</p>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product card",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show rating",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show quick add button",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

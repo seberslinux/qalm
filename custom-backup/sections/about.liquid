@@ -1,0 +1,95 @@
+{% comment %}
+  About section
+{% endcomment %}
+
+<section class="py-20 px-4 md:px-6">
+  <div class="container mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="order-2 lg:order-1">
+        <h2 class="text-3xl font-light mb-6">
+          {{ section.settings.section_title | default: 'Our Sensory-Friendly Promise' }}
+        </h2>
+        
+        <div class="text-gray-600 mb-6">
+          {{ section.settings.section_content_1 | default: 'At SENSORY, we understand the unique challenges faced by individuals with sensory sensitivities. Our mission is to create clothing that feels as good as it looks, with an unwavering commitment to comfort, quality, and inclusivity.' }}
+        </div>
+        
+        <div class="text-gray-600 mb-8">
+          {{ section.settings.section_content_2 | default: 'Every piece in our collection is thoughtfully designed with seamless construction, tag-free labels, ultra-soft fabrics, and adjustable features to accommodate various sensory needs. We believe that everyone deserves to feel comfortable in their own skin—and in their clothes.' }}
+        </div>
+        
+        <a 
+          href="{{ section.settings.button_url | default: '/pages/about' }}" 
+          class="inline-block border border-black px-8 py-3 text-sm uppercase tracking-wider hover:bg-black hover:text-white transition-colors"
+        >
+          {{ section.settings.button_text | default: 'Learn More' }}
+        </a>
+      </div>
+      
+      <div class="order-1 lg:order-2">
+        {% if section.settings.about_image != blank %}
+          <img 
+            src="{{ section.settings.about_image | image_url: width: 800 }}" 
+            alt="{{ section.settings.about_image.alt | default: 'About us image' }}" 
+            class="w-full h-auto"
+            loading="lazy"
+          >
+        {% else %}
+          <img 
+            src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+            alt="Person enjoying sensory-friendly clothing" 
+            class="w-full h-auto"
+            loading="lazy"
+          >
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Our Sensory-Friendly Promise"
+    },
+    {
+      "type": "textarea",
+      "id": "section_content_1",
+      "label": "First Paragraph",
+      "default": "At SENSORY, we understand the unique challenges faced by individuals with sensory sensitivities. Our mission is to create clothing that feels as good as it looks, with an unwavering commitment to comfort, quality, and inclusivity."
+    },
+    {
+      "type": "textarea",
+      "id": "section_content_2",
+      "label": "Second Paragraph",
+      "default": "Every piece in our collection is thoughtfully designed with seamless construction, tag-free labels, ultra-soft fabrics, and adjustable features to accommodate various sensory needs. We believe that everyone deserves to feel comfortable in their own skin—and in their clothes."
+    },
+    {
+      "type": "image_picker",
+      "id": "about_image",
+      "label": "About Image"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About"
+    }
+  ]
+}
+{% endschema %}

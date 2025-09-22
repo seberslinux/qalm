@@ -1,0 +1,109 @@
+{% comment %}
+  Categories section
+{% endcomment %}
+
+<section class="py-20 px-4 md:px-6">
+  <div class="container mx-auto">
+    <h2 class="text-3xl font-light text-center mb-12">
+      {{ section.settings.section_title | default: 'Shop by Category' }}
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'category' %}
+            <a href="{{ block.settings.category_url }}" class="group relative h-80 overflow-hidden">
+              {% if block.settings.category_image != blank %}
+                <img 
+                  src="{{ block.settings.category_image | image_url: width: 600 }}" 
+                  alt="{{ block.settings.category_name }}" 
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                >
+              {% else %}
+                <img 
+                  src="https://images.unsplash.com/photo-1555009393-f20bdb245c4d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80" 
+                  alt="{{ block.settings.category_name }}" 
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                >
+              {% endif %}
+              
+              <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-opacity duration-300"></div>
+              
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="text-white text-2xl font-light tracking-wider">
+                  {{ block.settings.category_name }}
+                </span>
+              </div>
+            </a>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Categories",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Shop by Category"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "category_name",
+          "label": "Category Name"
+        },
+        {
+          "type": "image_picker",
+          "id": "category_image",
+          "label": "Category Image"
+        },
+        {
+          "type": "url",
+          "id": "category_url",
+          "label": "Category URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categories",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "Tops",
+            "category_url": "/collections/tops"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "Bottoms",
+            "category_url": "/collections/bottoms"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "Accessories",
+            "category_url": "/collections/accessories"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
