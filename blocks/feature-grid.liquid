@@ -1,0 +1,91 @@
+{% comment %}
+  Feature grid block - Reusable feature grid component
+{% endcomment %}
+
+{%- liquid
+  assign grid_columns = block.settings.grid_columns | default: 3
+  assign features = block.settings.features | split: '|'
+-%}
+
+<div class="feature-grid grid grid-cols-1 {% if grid_columns == 2 %}md:grid-cols-2{% elsif grid_columns == 3 %}md:grid-cols-3{% elsif grid_columns == 4 %}md:grid-cols-4{% endif %} gap-8">
+  {% for feature in features %}
+    {% if feature != blank %}
+      {% assign feature_parts = feature | split: '::' %}
+      {% assign icon = feature_parts[0] | strip %}
+      {% assign title = feature_parts[1] | strip %}
+      {% assign description = feature_parts[2] | strip %}
+      
+      <div class="feature-item text-center">
+        {% if icon != blank %}
+          <div class="feature-icon mb-4">
+            {% case icon %}
+              {% when 'shipping' %}
+                <svg class="w-12 h-12 mx-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+              {% when 'quality' %}
+                <svg class="w-12 h-12 mx-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              {% when 'support' %}
+                <svg class="w-12 h-12 mx-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z"></path>
+                </svg>
+              {% when 'returns' %}
+                <svg class="w-12 h-12 mx-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+              {% else %}
+                <div class="w-12 h-12 mx-auto bg-gray-200 rounded-full flex items-center justify-center">
+                  <span class="text-gray-500 text-xl">★</span>
+                </div>
+            {% endcase %}
+          </div>
+        {% endif %}
+        
+        {% if title != blank %}
+          <h3 class="text-lg font-medium mb-2">{{ title }}</h3>
+        {% endif %}
+        
+        {% if description != blank %}
+          <p class="text-gray-600 text-sm">{{ description }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Feature grid",
+  "settings": [
+    {
+      "type": "select",
+      "id": "grid_columns",
+      "label": "Number of columns",
+      "options": [
+        {
+          "value": "2",
+          "label": "2 columns"
+        },
+        {
+          "value": "3",
+          "label": "3 columns"
+        },
+        {
+          "value": "4",
+          "label": "4 columns"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "textarea",
+      "id": "features",
+      "label": "Features",
+      "info": "Enter each feature on a new line. Format: icon::title::description. Icons: shipping, quality, support, returns",
+      "default": "shipping::Free Shipping::Free shipping on orders over $50\nquality::Quality Guarantee::100% satisfaction guaranteed\nsupport::24/7 Support::Round-the-clock customer support"
+    }
+  ]
+}
+{% endschema %}

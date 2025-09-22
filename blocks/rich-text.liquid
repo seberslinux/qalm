@@ -1,0 +1,179 @@
+{% comment %}
+  Rich text block - Reusable rich text content component
+{% endcomment %}
+
+{%- liquid
+  assign heading_size = block.settings.heading_size | default: 'h2'
+  assign text_alignment = block.settings.text_alignment | default: 'left'
+  assign max_width = block.settings.max_width | default: 'none'
+-%}
+
+<div class="rich-text-block text-{{ text_alignment }}" style="{% if max_width != 'none' %}max-width: {{ max_width }}px; margin: 0 auto;{% endif %}">
+  {% if block.settings.heading != blank %}
+    {% case heading_size %}
+      {% when 'h1' %}
+        <h1 class="text-4xl font-light mb-6">{{ block.settings.heading }}</h1>
+      {% when 'h2' %}
+        <h2 class="text-3xl font-light mb-6">{{ block.settings.heading }}</h2>
+      {% when 'h3' %}
+        <h3 class="text-2xl font-light mb-4">{{ block.settings.heading }}</h3>
+      {% when 'h4' %}
+        <h4 class="text-xl font-light mb-4">{{ block.settings.heading }}</h4>
+    {% endcase %}
+  {% endif %}
+  
+  {% if block.settings.text != blank %}
+    <div class="rich-text-content text-gray-600 mb-6">
+      {{ block.settings.text }}
+    </div>
+  {% endif %}
+  
+  {% if block.settings.button_text != blank and block.settings.button_url != blank %}
+    <a 
+      href="{{ block.settings.button_url }}" 
+      class="inline-block bg-black text-white px-6 py-3 text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors"
+    >
+      {{ block.settings.button_text }}
+    </a>
+  {% endif %}
+</div>
+
+<style>
+.rich-text-content h1,
+.rich-text-content h2,
+.rich-text-content h3,
+.rich-text-content h4,
+.rich-text-content h5,
+.rich-text-content h6 {
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.rich-text-content p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.rich-text-content ul,
+.rich-text-content ol {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.rich-text-content li {
+  margin-bottom: 0.5rem;
+}
+
+.rich-text-content strong {
+  font-weight: 500;
+}
+
+.rich-text-content em {
+  font-style: italic;
+}
+
+.rich-text-content a {
+  color: #000;
+  text-decoration: underline;
+}
+
+.rich-text-content a:hover {
+  text-decoration: none;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Max width",
+      "options": [
+        {
+          "value": "none",
+          "label": "Full width"
+        },
+        {
+          "value": "600",
+          "label": "600px"
+        },
+        {
+          "value": "800",
+          "label": "800px"
+        },
+        {
+          "value": "1000",
+          "label": "1000px"
+        }
+      ],
+      "default": "none"
+    }
+  ]
+}
+{% endschema %}
