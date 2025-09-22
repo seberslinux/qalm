@@ -1,0 +1,101 @@
+{% comment %}
+  Button block - Reusable button component
+{% endcomment %}
+
+{%- liquid
+  assign button_text = block.settings.button_text | default: 'Button'
+  assign button_url = block.settings.button_url | default: '#'
+  assign button_style = block.settings.button_style | default: 'primary'
+  assign button_size = block.settings.button_size | default: 'medium'
+-%}
+
+{% case button_style %}
+  {% when 'primary' %}
+    {% assign button_classes = 'bg-black text-white hover:bg-gray-800' %}
+  {% when 'secondary' %}
+    {% assign button_classes = 'border border-black text-black hover:bg-black hover:text-white' %}
+  {% when 'outline' %}
+    {% assign button_classes = 'border-2 border-black text-black hover:bg-black hover:text-white' %}
+{% endcase %}
+
+{% case button_size %}
+  {% when 'small' %}
+    {% assign size_classes = 'px-4 py-2 text-sm' %}
+  {% when 'medium' %}
+    {% assign size_classes = 'px-6 py-3 text-base' %}
+  {% when 'large' %}
+    {% assign size_classes = 'px-8 py-4 text-lg' %}
+{% endcase %}
+
+<a 
+  href="{{ button_url }}" 
+  class="inline-block {{ button_classes }} {{ size_classes }} transition-colors duration-200 text-center no-underline"
+  {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+>
+  {{ button_text }}
+</a>
+
+{% schema %}
+{
+  "name": "Button",
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Button"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "outline",
+          "label": "Outline"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "Open in new tab",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

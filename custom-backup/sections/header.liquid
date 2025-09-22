@@ -1,0 +1,121 @@
+{% comment %}
+  Header section
+{% endcomment %}
+
+<header class="sticky top-0 z-50 bg-white border-b border-gray-100">
+  <div class="container mx-auto px-4 py-4 md:px-6">
+    <div class="flex items-center justify-between">
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+        <span id="menu-icon" class="block">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </span>
+        <span id="close-icon" class="hidden">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </span>
+      </button>
+
+      <!-- Logo -->
+      <div class="flex-1 md:flex-none text-center md:text-left">
+        <a href="{{ routes.root_url }}" class="inline-block">
+          {% if settings.logo != blank %}
+            <img src="{{ settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" class="h-10 w-auto">
+          {% else %}
+            <span class="text-2xl font-light">{{ shop.name }}</span>
+          {% endif %}
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        {% for link in linklists.main-menu.links %}
+          <a href="{{ link.url }}" class="text-gray-600 hover:text-black transition-colors text-sm">
+            {{ link.title }}
+          </a>
+        {% endfor %}
+      </nav>
+
+      <!-- Icons -->
+      <div class="flex items-center space-x-4">
+        <!-- Search -->
+        <button aria-label="Search" class="text-gray-600 hover:text-black transition-colors">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+
+        <!-- Account -->
+        <a href="{{ routes.account_url }}" aria-label="Account" class="text-gray-600 hover:text-black transition-colors">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+
+        <!-- Cart -->
+        <a href="{{ routes.cart_url }}" aria-label="Cart" class="text-gray-600 hover:text-black transition-colors relative">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          {% if cart.item_count > 0 %}
+            <span class="absolute -top-1 -right-1 bg-black text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+              {{ cart.item_count }}
+            </span>
+          {% endif %}
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden pt-4 pb-3 hidden">
+      <nav class="flex flex-col space-y-3">
+        {% for link in linklists.main-menu.links %}
+          <a href="{{ link.url }}" class="text-gray-600 hover:text-black transition-colors">
+            {{ link.title }}
+          </a>
+        {% endfor %}
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script>
+  function toggleMobileMenu() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+    
+    if (mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.remove('hidden');
+      menuIcon.classList.add('hidden');
+      closeIcon.classList.remove('hidden');
+    } else {
+      mobileMenu.classList.add('hidden');
+      menuIcon.classList.remove('hidden');
+      closeIcon.classList.add('hidden');
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    }
+  ]
+}
+{% endschema %}

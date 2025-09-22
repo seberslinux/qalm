@@ -1,0 +1,85 @@
+{% comment %}
+  Hero section
+{% endcomment %}
+
+<section class="w-full relative">
+  <div class="relative h-[80vh] overflow-hidden">
+    {% if section.settings.hero_image != blank %}
+      <img 
+        src="{{ section.settings.hero_image | image_url: width: 1920 }}" 
+        alt="{{ section.settings.hero_image.alt | default: 'Hero image' }}" 
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+      >
+    {% else %}
+      <img 
+        src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" 
+        alt="Person wearing comfortable sensory-friendly clothing" 
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+      >
+    {% endif %}
+    
+    <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+    
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+      <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-light mb-4 max-w-3xl">
+        {{ section.settings.hero_title | default: 'Sense and Style' }}
+      </h1>
+      
+      <p class="text-white text-lg md:text-xl mb-8 max-w-xl">
+        {{ section.settings.hero_subtitle | default: 'Calming design for busy worlds' }}
+      </p>
+      
+      <div>
+        <a 
+          href="{{ section.settings.hero_button_url | default: '/collections/all' }}" 
+          class="bg-white text-black px-8 py-3 text-sm uppercase tracking-wider hover:bg-gray-100 transition-colors"
+        >
+          {{ section.settings.hero_button_text | default: 'Shop Now' }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero Title",
+      "default": "Sense and Style"
+    },
+    {
+      "type": "text",
+      "id": "hero_subtitle",
+      "label": "Hero Subtitle",
+      "default": "Calming design for busy worlds"
+    },
+    {
+      "type": "text",
+      "id": "hero_button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "hero_button_url",
+      "label": "Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}
