@@ -1,0 +1,91 @@
+{% comment %}
+  Newsletter section
+{% endcomment %}
+
+<section class="py-20 px-4 md:px-6 bg-gray-100">
+  <div class="container mx-auto max-w-3xl text-center">
+    <h2 class="text-3xl font-light mb-4">
+      {{ section.settings.section_title | default: 'Join Our Community' }}
+    </h2>
+    
+    <p class="text-gray-600 mb-8">
+      {{ section.settings.section_description | default: 'Subscribe to receive updates on new products, sensory-friendly tips, and exclusive offers.' }}
+    </p>
+    
+    {% form 'customer' %}
+      <div class="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+        <input 
+          type="email" 
+          name="contact[email]" 
+          placeholder="{{ section.settings.email_placeholder | default: 'Your email address' }}" 
+          class="flex-grow px-4 py-3 border border-gray-300 focus:border-black focus:outline-none" 
+          aria-label="Email address" 
+          required 
+        />
+        <button 
+          type="submit" 
+          class="bg-black text-white px-6 py-3 text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors"
+        >
+          {{ section.settings.button_text | default: 'Subscribe' }}
+        </button>
+      </div>
+      
+      {% if form.posted_successfully? %}
+        <p class="text-green-600 text-sm mt-4">
+          {{ 'newsletter.success' | t }}
+        </p>
+      {% elsif form.errors %}
+        <p class="text-red-600 text-sm mt-4">
+          {{ form.errors | default_errors }}
+        </p>
+      {% endif %}
+    {% endform %}
+    
+    <p class="text-gray-500 text-sm mt-4">
+      {{ section.settings.privacy_text | default: 'By subscribing, you agree to our Privacy Policy and consent to receive updates from SENSORY.' }}
+    </p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Join Our Community"
+    },
+    {
+      "type": "textarea",
+      "id": "section_description",
+      "label": "Section Description",
+      "default": "Subscribe to receive updates on new products, sensory-friendly tips, and exclusive offers."
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Placeholder",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "textarea",
+      "id": "privacy_text",
+      "label": "Privacy Text",
+      "default": "By subscribing, you agree to our Privacy Policy and consent to receive updates from SENSORY."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

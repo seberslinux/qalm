@@ -1,0 +1,19 @@
+{% comment %}
+  The home page template
+{% endcomment %}
+
+{%- liquid
+  assign hero_section = 'hero'
+  assign categories_section = 'categories'
+  assign featured_products_section = 'featured-products'
+  assign about_section = 'about'
+  assign newsletter_section = 'newsletter'
+-%}
+
+<div class="flex flex-col min-h-screen bg-white">
+  {% section hero_section %}
+  {% section categories_section %}
+  {% section featured_products_section %}
+  {% section about_section %}
+  {% section newsletter_section %}
+</div>
