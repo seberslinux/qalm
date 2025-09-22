@@ -2,15 +2,10 @@
   The home page template
 {% endcomment %}
 
-{%- liquid
-  assign hero_section = 'hero'
-  assign categories_section = 'categories'
-  assign featured_products_section = 'featured-products'
-  assign about_section = 'about'
-  assign newsletter_section = 'newsletter'
--%}
-
 <div class="template-index">
+  <h1>Welcome to {{ shop.name }}</h1>
+  <p>Your sensory-friendly clothing store</p>
+  
   {% section 'hero' %}
   {% section 'categories' %}
   {% section 'featured-products' %}

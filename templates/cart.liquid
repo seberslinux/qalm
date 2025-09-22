@@ -1,0 +1,38 @@
+{% comment %}
+  Cart template
+{% endcomment %}
+
+<div class="template-cart">
+  <h1>{{ 'cart.general.title' | t }}</h1>
+  
+  {% if cart.item_count > 0 %}
+    <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
+      <div class="cart__items">
+        {% for item in cart.items %}
+          <div class="cart__item">
+            <div class="cart__item-image">
+              {% if item.image %}
+                <img src="{{ item.image | image_url: width: 100 }}" alt="{{ item.image.alt | escape }}">
+              {% endif %}
+            </div>
+            <div class="cart__item-details">
+              <h3>{{ item.product.title }}</h3>
+              <p>{{ item.variant.title }}</p>
+              <p>{{ item.price | money }}</p>
+              <input type="number" name="updates[]" value="{{ item.quantity }}" min="0">
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      
+      <div class="cart__footer">
+        <p>{{ 'cart.general.subtotal' | t }}: {{ cart.total_price | money }}</p>
+        <button type="submit" name="update">{{ 'cart.general.update' | t }}</button>
+        <button type="submit" name="checkout">{{ 'cart.general.checkout' | t }}</button>
+      </div>
+    </form>
+  {% else %}
+    <p>{{ 'cart.general.empty' | t }}</p>
+    <a href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue_shopping' | t }}</a>
+  {% endif %}
+</div>
